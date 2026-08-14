@@ -31,8 +31,14 @@ export default function TeamDetailPage() {
             </div>
           </div>
           <div className="flex gap-2">
-            <button className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Add member</button>
-            <button className="rounded-lg bg-sky-600 px-3 py-2 text-sm font-medium text-white hover:bg-sky-700">Edit team</button>
+            <Link
+              to="/workforce/teams/$teamId/add-member"
+              params={{ teamId: team.id }}
+              className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+            >
+              Add member
+            </Link>
+            <button type="button" className="rounded-lg bg-sky-600 px-3 py-2 text-sm font-medium text-white hover:bg-sky-700">Edit team</button>
           </div>
         </div>
       </div>
@@ -42,9 +48,21 @@ export default function TeamDetailPage() {
           <p className="text-slate-800">{team.mission}</p>
         </section>
         <div className="grid gap-4 sm:grid-cols-3">
-          <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm"><div className="text-xs text-slate-500">Velocity</div><div className="text-2xl font-semibold text-slate-900">{team.velocity}</div><div className="text-xs text-slate-400">story points / sprint</div></div>
-          <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm"><div className="text-xs text-slate-500">Allocation</div><div className="text-2xl font-semibold text-slate-900">{team.allocation}%</div><div className="text-xs text-slate-400">capacity used</div></div>
-          <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm"><div className="text-xs text-slate-500">Active projects</div><div className="text-2xl font-semibold text-slate-900">{team.projectCount}</div><div className="text-xs text-slate-400">in flight</div></div>
+          <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+            <div className="text-xs text-slate-500">Velocity</div>
+            <div className="text-2xl font-semibold text-slate-900">{team.velocity}</div>
+            <div className="text-xs text-slate-400">story points / sprint</div>
+          </div>
+          <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+            <div className="text-xs text-slate-500">Allocation</div>
+            <div className="text-2xl font-semibold text-slate-900">{team.allocation}%</div>
+            <div className="text-xs text-slate-400">capacity used</div>
+          </div>
+          <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+            <div className="text-xs text-slate-500">Active projects</div>
+            <div className="text-2xl font-semibold text-slate-900">{team.projectCount}</div>
+            <div className="text-xs text-slate-400">in flight</div>
+          </div>
         </div>
         <section className="rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden">
           <div className="border-b border-slate-100 px-5 py-3 flex items-center justify-between">
