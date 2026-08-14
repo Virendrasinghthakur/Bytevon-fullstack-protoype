@@ -25,8 +25,14 @@ export default function EmployeesListPage() {
     <div className="min-h-screen bg-slate-50">
       <div className="border-b border-slate-200 bg-white px-6 py-4">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <div><h1 className="text-xl font-semibold text-slate-900">Employees</h1><p className="text-sm text-slate-500">{employees.length} people across the organisation</p></div>
-          <button className="inline-flex items-center gap-1.5 rounded-lg bg-sky-600 px-3 py-2 text-sm font-medium text-white hover:bg-sky-700"><span className="material-symbols-outlined text-base">person_add</span>Add employee</button>
+          <div>
+            <h1 className="text-xl font-semibold text-slate-900">Employee Management</h1>
+            <p className="text-sm text-slate-500">{employees.length} people across the organisation</p>
+          </div>
+          <Link to="/workforce/employees/new" className="inline-flex items-center gap-1.5 rounded-lg bg-sky-600 px-3 py-2 text-sm font-medium text-white hover:bg-sky-700">
+            <span className="material-symbols-outlined text-base">person_add</span>
+            Add employee
+          </Link>
         </div>
         <div className="mt-4 flex flex-wrap gap-3">
           <div className="relative flex-1 min-w-[200px]">
@@ -44,9 +50,9 @@ export default function EmployeesListPage() {
       {selected.size > 0 && (
         <div className="sticky top-0 z-10 border-b border-sky-200 bg-sky-50 px-6 py-2 flex items-center gap-3">
           <span className="text-sm font-medium text-sky-800">{selected.size} selected</span>
-          <button className="text-sm text-sky-700 hover:underline">Archive</button>
-          <button className="text-sm text-sky-700 hover:underline">Export</button>
-          <button className="text-sm text-sky-700 hover:underline" onClick={() => setSelected(new Set())}>Clear</button>
+          <button type="button" className="text-sm text-sky-700 hover:underline">Archive</button>
+          <button type="button" className="text-sm text-sky-700 hover:underline">Export</button>
+          <button type="button" className="text-sm text-sky-700 hover:underline" onClick={() => setSelected(new Set())}>Clear</button>
         </div>
       )}
       <div className="mx-auto max-w-6xl px-6 py-6">
@@ -69,18 +75,30 @@ export default function EmployeesListPage() {
                   <td className="px-4 py-3">
                     <Link to="/workforce/employees/$employeeId" params={{ employeeId: e.id }} className="flex items-center gap-3">
                       <div className="h-9 w-9 rounded-full bg-sky-500 text-white flex items-center justify-center text-xs font-medium">{e.avatar}</div>
-                      <div><div className="font-medium text-slate-900 hover:text-sky-600">{e.name}</div><div className="text-xs text-slate-500">{e.email}</div></div>
+                      <div>
+                        <div className="font-medium text-slate-900 hover:text-sky-600">{e.name}</div>
+                        <div className="text-xs text-slate-500">{e.email}</div>
+                      </div>
                     </Link>
                   </td>
                   <td className="px-4 py-3 hidden sm:table-cell text-slate-600">{e.department}</td>
                   <td className="px-4 py-3 hidden md:table-cell text-slate-600">{e.role}</td>
                   <td className="px-4 py-3"><span className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${statusColor[e.status] || statusColor.Inactive}`}>{e.status}</span></td>
-                  <td className="px-4 py-3"><Link to="/workforce/employees/$employeeId" params={{ employeeId: e.id }} className="text-slate-400 hover:text-sky-600"><span className="material-symbols-outlined text-xl">chevron_right</span></Link></td>
+                  <td className="px-4 py-3">
+                    <Link to="/workforce/employees/$employeeId" params={{ employeeId: e.id }} className="text-slate-400 hover:text-sky-600">
+                      <span className="material-symbols-outlined text-xl">chevron_right</span>
+                    </Link>
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
-          {filtered.length === 0 && <div className="px-6 py-16 text-center"><span className="material-symbols-outlined text-4xl text-slate-300">group_off</span><p className="mt-2 text-sm text-slate-500">No employees match your filters</p></div>}
+          {filtered.length === 0 && (
+            <div className="px-6 py-16 text-center">
+              <span className="material-symbols-outlined text-4xl text-slate-300">group_off</span>
+              <p className="mt-2 text-sm text-slate-500">No employees match your filters</p>
+            </div>
+          )}
         </div>
       </div>
     </div>
