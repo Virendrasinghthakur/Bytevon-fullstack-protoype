@@ -5,6 +5,7 @@ import {
   createRouter,
   createRootRoute,
   createRoute,
+  redirect,
   Outlet,
   Link,
 } from '@tanstack/react-router'
@@ -12,9 +13,13 @@ import './index.css'
 
 import EmployeesListPage from './modules/workforce/pages/EmployeesListPage'
 import EmployeeDetailPage from './modules/workforce/pages/EmployeeDetailPage'
+import EmployeeCreatePage from './modules/workforce/pages/EmployeeCreatePage'
 import TeamsListPage from './modules/workforce/pages/TeamsListPage'
 import TeamDetailPage from './modules/workforce/pages/TeamDetailPage'
+import AddMemberPage from './modules/workforce/pages/AddMemberPage'
 import DepartmentsListPage from './modules/workforce/pages/DepartmentsListPage'
+import DepartmentDetailPage from './modules/workforce/pages/DepartmentDetailPage'
+import DepartmentCreatePage from './modules/workforce/pages/DepartmentCreatePage'
 
 function AppShell() {
   return (
@@ -36,6 +41,7 @@ function AppShell() {
           <Link
             to="/workforce/departments"
             className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-100 [&.active]:bg-sky-50 [&.active]:text-sky-700 [&.active]:font-medium"
+            activeOptions={{ exact: false }}
           >
             <span className="material-symbols-outlined text-xl">apartment</span>
             Departments
@@ -43,6 +49,7 @@ function AppShell() {
           <Link
             to="/workforce/teams"
             className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-100 [&.active]:bg-sky-50 [&.active]:text-sky-700 [&.active]:font-medium"
+            activeOptions={{ exact: false }}
           >
             <span className="material-symbols-outlined text-xl">groups</span>
             Teams
@@ -60,32 +67,25 @@ const rootRoute = createRootRoute({
   component: AppShell,
 })
 
+// Default: Employee Management
 const indexRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/',
-  component: () => (
-    <div className="flex h-full flex-col items-center justify-center gap-4 p-8">
-      <h1 className="text-2xl font-semibold text-slate-900">Workforce module</h1>
-      <p className="text-slate-600">Pick a section from the sidebar to get started.</p>
-      <div className="flex gap-3">
-        <Link to="/workforce/employees" className="rounded-lg bg-sky-600 px-4 py-2 text-sm font-medium text-white">
-          Employees
-        </Link>
-        <Link to="/workforce/departments" className="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium">
-          Departments
-        </Link>
-        <Link to="/workforce/teams" className="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium">
-          Teams
-        </Link>
-      </div>
-    </div>
-  ),
+  beforeLoad: () => {
+    throw redirect({ to: '/workforce/employees' })
+  },
 })
 
 const employeesRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/workforce/employees',
   component: EmployeesListPage,
+})
+
+const employeeCreateRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/workforce/employees/new',
+  component: EmployeeCreatePage,
 })
 
 const employeeDetailRoute = createRoute({
@@ -100,6 +100,18 @@ const departmentsRoute = createRoute({
   component: DepartmentsListPage,
 })
 
+const departmentCreateRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/workforce/departments/new',
+  component: DepartmentCreatePage,
+})
+
+const departmentDetailRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/workforce/departments/$departmentId',
+  component: DepartmentDetailPage,
+})
+
 const teamsRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/workforce/teams',
@@ -112,13 +124,23 @@ const teamDetailRoute = createRoute({
   component: TeamDetailPage,
 })
 
+const addMemberRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/workforce/teams/$teamId/add-member',
+  component: AddMemberPage,
+})
+
 const routeTree = rootRoute.addChildren([
   indexRoute,
   employeesRoute,
+  employeeCreateRoute,
   employeeDetailRoute,
   departmentsRoute,
+  departmentCreateRoute,
+  departmentDetailRoute,
   teamsRoute,
   teamDetailRoute,
+  addMemberRoute,
 ])
 
 const router = createRouter({ routeTree })
