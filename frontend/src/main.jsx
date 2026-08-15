@@ -20,6 +20,10 @@ import AddMemberPage from './modules/workforce/pages/AddMemberPage'
 import DepartmentsListPage from './modules/workforce/pages/DepartmentsListPage'
 import DepartmentDetailPage from './modules/workforce/pages/DepartmentDetailPage'
 import DepartmentCreatePage from './modules/workforce/pages/DepartmentCreatePage'
+import AttendanceDashboardPage from './modules/workforce/pages/AttendanceDashboardPage'
+import AttendanceEmployeesPage from './modules/workforce/pages/AttendanceEmployeesPage'
+import MarkAttendancePage from './modules/workforce/pages/MarkAttendancePage'
+import AttendanceDetailPage from './modules/workforce/pages/AttendanceDetailPage'
 
 function AppShell() {
   return (
@@ -32,7 +36,7 @@ function AppShell() {
         <nav className="space-y-0.5 px-2">
           <Link
             to="/workforce/employees"
-            className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-100 [&.active]:bg-sky-50 [&.active]:text-sky-700 [&.active]:font-medium"
+            className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-100 [&.active]:bg-sky-50 [&.active]:font-medium [&.active]:text-sky-700"
             activeOptions={{ exact: false }}
           >
             <span className="material-symbols-outlined text-xl">group</span>
@@ -40,7 +44,7 @@ function AppShell() {
           </Link>
           <Link
             to="/workforce/departments"
-            className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-100 [&.active]:bg-sky-50 [&.active]:text-sky-700 [&.active]:font-medium"
+            className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-100 [&.active]:bg-sky-50 [&.active]:font-medium [&.active]:text-sky-700"
             activeOptions={{ exact: false }}
           >
             <span className="material-symbols-outlined text-xl">apartment</span>
@@ -48,11 +52,19 @@ function AppShell() {
           </Link>
           <Link
             to="/workforce/teams"
-            className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-100 [&.active]:bg-sky-50 [&.active]:text-sky-700 [&.active]:font-medium"
+            className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-100 [&.active]:bg-sky-50 [&.active]:font-medium [&.active]:text-sky-700"
             activeOptions={{ exact: false }}
           >
             <span className="material-symbols-outlined text-xl">groups</span>
             Teams
+          </Link>
+          <Link
+            to="/workforce/attendance"
+            className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-100 [&.active]:bg-sky-50 [&.active]:font-medium [&.active]:text-sky-700"
+            activeOptions={{ exact: false }}
+          >
+            <span className="material-symbols-outlined text-xl">fact_check</span>
+            Attendance
           </Link>
         </nav>
       </aside>
@@ -63,11 +75,8 @@ function AppShell() {
   )
 }
 
-const rootRoute = createRootRoute({
-  component: AppShell,
-})
+const rootRoute = createRootRoute({ component: AppShell })
 
-// Default: Employee Management
 const indexRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/',
@@ -76,59 +85,22 @@ const indexRoute = createRoute({
   },
 })
 
-const employeesRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/workforce/employees',
-  component: EmployeesListPage,
-})
+const employeesRoute = createRoute({ getParentRoute: () => rootRoute, path: '/workforce/employees', component: EmployeesListPage })
+const employeeCreateRoute = createRoute({ getParentRoute: () => rootRoute, path: '/workforce/employees/new', component: EmployeeCreatePage })
+const employeeDetailRoute = createRoute({ getParentRoute: () => rootRoute, path: '/workforce/employees/$employeeId', component: EmployeeDetailPage })
 
-const employeeCreateRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/workforce/employees/new',
-  component: EmployeeCreatePage,
-})
+const departmentsRoute = createRoute({ getParentRoute: () => rootRoute, path: '/workforce/departments', component: DepartmentsListPage })
+const departmentCreateRoute = createRoute({ getParentRoute: () => rootRoute, path: '/workforce/departments/new', component: DepartmentCreatePage })
+const departmentDetailRoute = createRoute({ getParentRoute: () => rootRoute, path: '/workforce/departments/$departmentId', component: DepartmentDetailPage })
 
-const employeeDetailRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/workforce/employees/$employeeId',
-  component: EmployeeDetailPage,
-})
+const teamsRoute = createRoute({ getParentRoute: () => rootRoute, path: '/workforce/teams', component: TeamsListPage })
+const teamDetailRoute = createRoute({ getParentRoute: () => rootRoute, path: '/workforce/teams/$teamId', component: TeamDetailPage })
+const addMemberRoute = createRoute({ getParentRoute: () => rootRoute, path: '/workforce/teams/$teamId/add-member', component: AddMemberPage })
 
-const departmentsRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/workforce/departments',
-  component: DepartmentsListPage,
-})
-
-const departmentCreateRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/workforce/departments/new',
-  component: DepartmentCreatePage,
-})
-
-const departmentDetailRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/workforce/departments/$departmentId',
-  component: DepartmentDetailPage,
-})
-
-const teamsRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/workforce/teams',
-  component: TeamsListPage,
-})
-
-const teamDetailRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/workforce/teams/$teamId',
-  component: TeamDetailPage,
-})
-
-const addMemberRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/workforce/teams/$teamId/add-member',
-  component: AddMemberPage,
-})
+const attendanceRoute = createRoute({ getParentRoute: () => rootRoute, path: '/workforce/attendance', component: AttendanceDashboardPage })
+const attendanceEmployeesRoute = createRoute({ getParentRoute: () => rootRoute, path: '/workforce/attendance/employees', component: AttendanceEmployeesPage })
+const markAttendanceRoute = createRoute({ getParentRoute: () => rootRoute, path: '/workforce/attendance/mark', component: MarkAttendancePage })
+const attendanceDetailRoute = createRoute({ getParentRoute: () => rootRoute, path: '/workforce/attendance/$attendanceId', component: AttendanceDetailPage })
 
 const routeTree = rootRoute.addChildren([
   indexRoute,
@@ -141,6 +113,10 @@ const routeTree = rootRoute.addChildren([
   teamsRoute,
   teamDetailRoute,
   addMemberRoute,
+  attendanceRoute,
+  attendanceEmployeesRoute,
+  markAttendanceRoute,
+  attendanceDetailRoute,
 ])
 
 const router = createRouter({ routeTree })
